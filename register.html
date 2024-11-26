@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
+    <title>Responsive Registration Form</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            background-color: #f9f9f9;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -17,8 +17,8 @@
         .registration-form {
             background: #ffffff;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
         }
@@ -32,29 +32,23 @@
         }
         .form-group label {
             display: block;
-            margin-bottom: 5px;
             font-size: 14px;
+            margin-bottom: 5px;
         }
-        .form-group input,
-        .form-group select {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 10px;
             font-size: 14px;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 5px;
         }
-        .form-group input:focus,
-        .form-group select:focus {
+        .form-group input:focus, .form-group select:focus {
             border-color: #007bff;
             outline: none;
-        }
-        .permissions {
-            margin-bottom: 15px;
         }
         .permissions label {
             display: block;
             margin-bottom: 5px;
-            font-size: 14px;
         }
         .permissions input {
             margin-right: 5px;
@@ -63,9 +57,9 @@
             width: 100%;
             padding: 10px;
             background: #007bff;
-            color: #ffffff;
+            color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
         }
@@ -73,10 +67,10 @@
             background: #0056b3;
         }
         .message {
+            text-align: center;
             margin-top: 15px;
             font-size: 14px;
             color: green;
-            text-align: center;
         }
     </style>
 </head>
@@ -85,12 +79,12 @@
         <h2>User Registration</h2>
         <div class="form-group">
             <label for="fullName">Full Name</label>
-            <input type="text" id="fullName" name="fullName" required>
+            <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
         </div>
         <div class="form-group">
             <label for="course">Course</label>
             <select id="course" name="course" onchange="updateYearOptions()" required>
-                <option value="" disabled selected>Select Course</option>
+                <option value="" disabled selected>Select your course</option>
                 <option value="BCA">BCA</option>
                 <option value="BBA">BBA</option>
                 <option value="MBA">MBA</option>
@@ -99,24 +93,59 @@
         <div class="form-group">
             <label for="year">Year</label>
             <select id="year" name="year" required>
-                <option value="" disabled selected>Select Year</option>
+                <option value="" disabled selected>Select year</option>
             </select>
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" placeholder="Create a password" required>
         </div>
         <div class="permissions">
             <label>Permissions:</label>
-            <label><input type="checkbox" id="camera" name="camera"> Camera</label>
-            <label><input type="checkbox" id="fingerprint" name="fingerprint"> Fingerprint Sensor</label>
-            <label><input type="checkbox" id="location" name="location"> Location</label>
-            <label><input type="checkbox" id="timeDate" name="timeDate"> Time and Date</label>
+            <label><input type="checkbox" id="camera" name="permissions" value="Camera"> Camera</label>
+            <label><input type="checkbox" id="fingerprint" name="permissions" value="Fingerprint Sensor"> Fingerprint Sensor</label>
+            <label><input type="checkbox" id="location" name="permissions" value="Location"> Location</label>
+            <label><input type="checkbox" id="timeDate" name="permissions" value="Time and Date"> Time and Date</label>
         </div>
         <button type="button" class="submit-btn" onclick="registerUser()">Register</button>
-        <div class="message" id="message"></div>
+        <div id="message" class="message"></div>
     </form>
 
-    <script src="app.js"></script>
+    <script>
+        function updateYearOptions() {
+            const course = document.getElementById('course').value;
+            const yearSelect = document.getElementById('year');
+            yearSelect.innerHTML = '<option value="" disabled selected>Select year</option>';
+
+            const years = course === 'MBA' ? ['1st', '2nd'] : ['1st', '2nd', '3rd'];
+            years.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
+            });
+        }
+
+        function registerUser() {
+            const fullName = document.getElementById('fullName').value.trim();
+            const course = document.getElementById('course').value;
+            const year = document.getElementById('year').value;
+            const password = document.getElementById('password').value;
+            const permissions = Array.from(document.querySelectorAll('input[name="permissions"]:checked')).map(p => p.value);
+            const message = document.getElementById('message');
+
+            if (!fullName || !course || !year || !password) {
+                message.textContent = 'Please fill all required fields.';
+                message.style.color = 'red';
+                return;
+            }
+
+            const userData = { fullName, course, year, password, permissions };
+            console.log('User Registered:', userData);
+            message.textContent = 'Registration successful!';
+            message.style.color = 'green';
+            document.getElementById('registrationForm').reset();
+        }
+    </script>
 </body>
 </html>
