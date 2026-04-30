@@ -1,3 +1,3 @@
 fddfrertetretgre
 new update is comming soon
-so stay
+so stay connected
