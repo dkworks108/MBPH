@@ -13,7 +13,8 @@ set
 done
 new project 
 launch soon
-soo
+soo will live soon
+
 new updates are launch sson
 thire is new
 final edit
